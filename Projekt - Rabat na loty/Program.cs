@@ -13,17 +13,23 @@ namespace Projekt___Rabat_na_loty
             // Pytania do użytkownika
             Console.Write("Podaj swoją datę urodzenia w formacie RRRR-MM-DD: ");
             DateTime dataUrodzenia;
-            while (!DateTime.TryParse(Console.ReadLine(), out dataUrodzenia))
+            while (!DateTime.TryParse(Console.ReadLine(), out dataUrodzenia) || dataUrodzenia > DateTime.Now)
             {
-                Console.WriteLine("Niepoprawny format daty. Podaj ponownie: ");
+                if (dataUrodzenia > DateTime.Now)
+                {
+                    Console.WriteLine("Data urodzenia nie może być z przyszłości. Podaj ponownie: ");
+                }
+                else
+                {
+                    Console.WriteLine("Niepoprawny format daty. Podaj ponownie: ");
+                }
             }
-
 
             Console.Write("Podaj datę lotu w formacie RRRR-MM-DD: ");
             DateTime dataLotu;
-            while (!DateTime.TryParse(Console.ReadLine(), out dataLotu))
+            while (!DateTime.TryParse(Console.ReadLine(), out dataLotu) || dataLotu < DateTime.Now.Date)
             {
-                Console.WriteLine("Niepoprawny format daty. Podaj ponownie: ");
+                    Console.WriteLine("Niepoprawny format daty lub data z przeszłości. Podaj ponownie: ");
             }
 
             bool lotKrajowy;
