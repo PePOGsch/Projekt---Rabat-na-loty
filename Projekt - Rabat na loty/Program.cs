@@ -18,13 +18,13 @@ namespace Projekt___Rabat_na_loty
                 Console.WriteLine("Niepoprawny format daty. Podaj ponownie: ");
             }
 
+
             Console.Write("Podaj datę lotu w formacie RRRR-MM-DD: ");
             DateTime dataLotu;
             while (!DateTime.TryParse(Console.ReadLine(), out dataLotu))
             {
                 Console.WriteLine("Niepoprawny format daty. Podaj ponownie: ");
             }
-
 
             bool lotKrajowy;
             do
@@ -57,25 +57,17 @@ namespace Projekt___Rabat_na_loty
 
                     if (odpowiedz == "T" || odpowiedz == "N")
                     {
-                        //if (odpowiedz == "T" && dataUrodzenia.AddYears(18)>dataLotu) //sprawdzam czy w dniu wylotu ma 18 lat
-                        //{
-                        //    //Console.WriteLine("Nie przysługuje Ci rabat dla stałych klientów");
-                        //    stalymKlientem = false;
-                        //    break;
-                        //}
-                        //else
-                        //{
                             stalymKlientem = odpowiedz == "T";
                             break;
-                       // }
                     }
                     else
                     {
                         Console.WriteLine("Niepoprawny znak. Wprowadz T lub N: ");
                     }
-                } while (true); // Petla nieskonczona. Moze ja przerwac tylko break z IFa wyzej tak samo jak przy locie krajowym
+                } while (true); // Petla nieskonczona. Moze ja przerwac tylko break z IFa wyzej, tak samo jak przy locie krajowym
             }
-            // Obliczenia rabatu
+
+
             double rabat = ObliczRabat(dataUrodzenia, dataLotu, lotKrajowy, stalymKlientem);
 
             // Wydruk raportu
@@ -88,44 +80,47 @@ namespace Projekt___Rabat_na_loty
             Console.WriteLine($"Data wygenerowania raportu: {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}");
         }
 
-        // Funkcja do obliczenia rabatu
+        // Funkcja do obliczenia rabatu 
+        // Wszystki rabaty są obliczone na dzień dzisiejszy.
         static double ObliczRabat(DateTime dataUrodzenia, DateTime dataLotu, bool lotKrajowy, bool stalymKlientem)
         {
             double rabat = 0;
-
-            // Rabat dla niemowląt
-            if (dataUrodzenia.AddYears(2) > dataLotu) // Mniej niż 2 lata
+            
+            if (!CzySezon(dataLotu))
+            {
+                if (lotKrajowy)
                 {
-                rabat = lotKrajowy ? 80 : 70; // 
-                rabat = Math.Min(rabat, 80); // Maksymalny rabat dla niemowląt - 80%
-                return rabat;
+                    if (dataUrodzenia.AddYears(2) >= DateTime.Now) rabat += 80; // rabat dla niemowlaka
+                    if ((dataUrodzenia.AddYears(2) <= DateTime.Now) && (dataUrodzenia.AddYears(16) >= DateTime.Now)) rabat += 10; // rabat dla mlodziezy
+                    if (stalymKlientem) rabat += 15; // rabat dla stalych klientow
+                    if (DateTime.Now.AddMonths(5) < dataLotu) rabat += 10; // rabat za rezerwacje 5 miesiecy przed lotem 
+                }
+                else
+                {
+                    if (dataUrodzenia.AddYears(2) >= DateTime.Now) rabat += 70;
+                    if ((dataUrodzenia.AddYears(2) <= DateTime.Now) && (dataUrodzenia.AddYears(16) >= DateTime.Now)) rabat += 10;
+                    if (stalymKlientem) rabat += 15;
+                    if (DateTime.Now.AddMonths(5) < dataLotu) rabat += 10;
+                    rabat += 15; // Dla lotów międzynarodowych pasażerom przysługuje 15% rabat, jeśli podróżują poza sezonem.
+                }
             }
-            // Rabat dla młodzieży
-            else if ((dataUrodzenia.AddYears(2) <= dataLotu) && (dataUrodzenia.AddYears(16) >= dataLotu))
+            else
             {
-                rabat = 10;
-            }
-            // Rabat dla rezerwacji 5 miesięcy przed lotem
-            else if (DateTime.Now.AddMonths(5)<dataLotu)
-            {
-                rabat = 10;
-            }
-            // Rabat dla lotów międzynarodowych poza sezonem
-            else if (!lotKrajowy && !CzySezon(dataLotu))
-            {
-                rabat = 15;
-            }
-            // Rabat dla stałych klientów
-            else if (stalymKlientem)
-            {
-                rabat = 15;
-            }
+                if(lotKrajowy)
+                {
+                    if (dataUrodzenia.AddYears(2) >= DateTime.Now) rabat += 80;
+                    if ((dataUrodzenia.AddYears(2) <= DateTime.Now) && (dataUrodzenia.AddYears(16) >= DateTime.Now)) rabat += 10;
+                    if (stalymKlientem) rabat += 15;
+                    if (DateTime.Now.AddMonths(5) < dataLotu) rabat += 10;
+                }
+                else
+                {
+                    if (dataUrodzenia.AddYears(2) >= DateTime.Now) rabat += 70;
 
-            // Maksymalny łączny rabat dla pozostałych - 30%
-            if (!stalymKlientem)
-            {
-                rabat = Math.Min(rabat, 30);
+                }
             }
+            // Maksymalny łączny rabat dla niemowlat 80% a dla pozostałych - 30%
+            rabat = (dataUrodzenia.AddYears(2) >= DateTime.Now) ? Math.Min(rabat, 80) : Math.Min(rabat, 30);
             return rabat;
         }
 
