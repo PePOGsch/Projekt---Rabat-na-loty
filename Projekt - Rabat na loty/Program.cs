@@ -27,9 +27,9 @@ namespace Projekt___Rabat_na_loty
 
             Console.Write("Podaj datę lotu w formacie RRRR-MM-DD: ");
             DateTime dataLotu;
-            while (!DateTime.TryParse(Console.ReadLine(), out dataLotu) || dataLotu < DateTime.Now.Date)
+            while (!DateTime.TryParse(Console.ReadLine(), out dataLotu) || dataLotu < DateTime.Now)
             {
-                    Console.WriteLine("Niepoprawny format daty lub data z przeszłości. Podaj ponownie: ");
+                    Console.WriteLine("Niepoprawny format lub data z przeszłości. Podaj ponownie: ");
             }
 
             bool lotKrajowy;
@@ -122,7 +122,7 @@ namespace Projekt___Rabat_na_loty
                 else
                 {
                     if (dataUrodzenia.AddYears(2) >= DateTime.Now) rabat += 70;
-
+                    if ((dataUrodzenia.AddYears(2) >= DateTime.Now) && (DateTime.Now.AddMonths(5) < dataLotu))  rabat += 10;
                 }
             }
             // Maksymalny łączny rabat dla niemowlat 80% a dla pozostałych - 30%
