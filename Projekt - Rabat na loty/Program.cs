@@ -96,15 +96,15 @@ namespace Projekt___Rabat_na_loty
             {
                 if (lotKrajowy)
                 {
-                    if (dataUrodzenia.AddYears(2) >= DateTime.Now) rabat += 80; // rabat dla niemowlaka
-                    if ((dataUrodzenia.AddYears(2) <= DateTime.Now) && (dataUrodzenia.AddYears(16) >= DateTime.Now)) rabat += 10; // rabat dla mlodziezy
+                    if (dataUrodzenia.AddYears(2) > DateTime.Now) rabat += 80; // rabat dla niemowlaka
+                    if ((dataUrodzenia.AddYears(2) <= DateTime.Now) && (dataUrodzenia.AddYears(16) > DateTime.Now)) rabat += 10; // rabat dla mlodziezy
                     if (stalymKlientem) rabat += 15; // rabat dla stalych klientow
                     if (DateTime.Now.AddMonths(5) < dataLotu) rabat += 10; // rabat za rezerwacje 5 miesiecy przed lotem 
                 }
                 else
                 {
-                    if (dataUrodzenia.AddYears(2) >= DateTime.Now) rabat += 70;
-                    if ((dataUrodzenia.AddYears(2) <= DateTime.Now) && (dataUrodzenia.AddYears(16) >= DateTime.Now)) rabat += 10;
+                    if (dataUrodzenia.AddYears(2) > DateTime.Now) rabat += 70;
+                    if ((dataUrodzenia.AddYears(2) <= DateTime.Now) && (dataUrodzenia.AddYears(16) > DateTime.Now)) rabat += 10;
                     if (stalymKlientem) rabat += 15;
                     if (DateTime.Now.AddMonths(5) < dataLotu) rabat += 10;
                     rabat += 15; // Dla lotów międzynarodowych pasażerom przysługuje 15% rabat, jeśli podróżują poza sezonem.
@@ -114,15 +114,15 @@ namespace Projekt___Rabat_na_loty
             {
                 if(lotKrajowy)
                 {
-                    if (dataUrodzenia.AddYears(2) >= DateTime.Now) rabat += 80;
-                    if ((dataUrodzenia.AddYears(2) <= DateTime.Now) && (dataUrodzenia.AddYears(16) >= DateTime.Now)) rabat += 10;
+                    if (dataUrodzenia.AddYears(2) > DateTime.Now) rabat += 80;
+                    if ((dataUrodzenia.AddYears(2) <= DateTime.Now) && (dataUrodzenia.AddYears(16) > DateTime.Now)) rabat += 10;
                     if (stalymKlientem) rabat += 15;
                     if (DateTime.Now.AddMonths(5) < dataLotu) rabat += 10;
                 }
                 else
                 {
-                    if (dataUrodzenia.AddYears(2) >= DateTime.Now) rabat += 70;
-                    if ((dataUrodzenia.AddYears(2) >= DateTime.Now) && (DateTime.Now.AddMonths(5) < dataLotu))  rabat += 10;
+                    if (dataUrodzenia.AddYears(2) > DateTime.Now) rabat += 70;
+                    if ((dataUrodzenia.AddYears(2) > DateTime.Now) && (DateTime.Now.AddMonths(5) < dataLotu))  rabat += 10;
                 }
             }
             // Maksymalny łączny rabat dla niemowlat 80% a dla pozostałych - 30%
